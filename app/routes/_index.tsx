@@ -11,7 +11,7 @@ export const meta: V2_MetaFunction = () => {
 export async function loader({context}: LoaderArgs) {
   const {storefront} = context;
   const {collection} = await storefront.query(COLLECTION_QUERY, {
-    variables: {handle: 'rodeo'},
+    variables: {handle: 'rodeo-tienda'},
   });
 
   if (!collection) {
