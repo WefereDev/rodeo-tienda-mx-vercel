@@ -8,6 +8,7 @@ import type {
   ProductVariantsQuery,
   ProductVariantFragment,
 } from 'storefrontapi.generated';
+import {useState} from 'react';
 
 import {
   Image,
@@ -106,14 +107,22 @@ export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   return (
-    <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <ProductMain
-        selectedVariant={selectedVariant}
-        product={product}
-        variants={variants}
+    <>
+      <img
+        className="fixed top-0 left-0 w-full h-full object-cover blur-[200px] -z-50"
+        src={selectedVariant?.image?.url}
       />
-    </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 bg-white border-2 border-black my-8 max-w-[1024px] mx-4 lg:mx-auto">
+        <div className="col-span-2">
+          <ProductImage image={selectedVariant?.image} />
+        </div>
+        <ProductMain
+          selectedVariant={selectedVariant}
+          product={product}
+          variants={variants}
+        />
+      </div>
+    </>
   );
 }
 
@@ -145,10 +154,12 @@ function ProductMain({
 }) {
   const {title, descriptionHtml} = product;
   return (
-    <div className="product-main">
-      <h1>{title}</h1>
+    <div className="product-main flex flex-col gap-3 lg:border-l-2 h-full border-black p-3">
+      <h1 className="bg-gradient-to-t border-black from-[#D6A585] bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-black uppercase border-2 rounded-lg flex items-center justify-center px-4 w-full min-h-10">
+        {title}
+      </h1>
       <ProductPrice selectedVariant={selectedVariant} />
-      <br />
+
       <Suspense
         fallback={
           <ProductForm
@@ -171,14 +182,15 @@ function ProductMain({
           )}
         </Await>
       </Suspense>
-      <br />
-      <br />
-      <p>
-        <strong>Description</strong>
-      </p>
-      <br />
-      <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-      <br />
+
+      {product.description && (
+        <>
+          <p>
+            <strong>Description</strong>
+          </p>
+          <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+        </>
+      )}
     </div>
   );
 }
@@ -189,11 +201,11 @@ function ProductPrice({
   selectedVariant: ProductFragment['selectedVariant'];
 }) {
   return (
-    <div className="product-price">
+    <div className="product-price font-bold">
       {selectedVariant?.compareAtPrice ? (
         <>
           <p>Sale</p>
-          <br />
+
           <div className="product-price-on-sale">
             {selectedVariant ? <Money data={selectedVariant.price} /> : null}
             <s>
@@ -208,7 +220,7 @@ function ProductPrice({
   );
 }
 
-function ProductForm({
+export function ProductForm({
   product,
   selectedVariant,
   variants,
@@ -217,6 +229,15 @@ function ProductForm({
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
 }) {
+  const [quantity, setQuantity] = useState(1);
+
+  const handleQuantityChange = (value: number) => {
+    if (value < 1) {
+      setQuantity(1);
+    } else {
+      setQuantity(value);
+    }
+  };
   return (
     <div className="product-form">
       <VariantSelector
@@ -226,54 +247,83 @@ function ProductForm({
       >
         {({option}) => <ProductOptions key={option.name} option={option} />}
       </VariantSelector>
-      <br />
-      <AddToCartButton
-        disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          window.location.href = window.location.href + '#cart-aside';
-        }}
-        lines={
-          selectedVariant
-            ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                },
-              ]
-            : []
-        }
-      >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
-      </AddToCartButton>
+
+      <div className="flex gap-3">
+        <div className="quantity-selector flex items-center gap-2 font-bold">
+          <button
+            type="button"
+            onClick={() => handleQuantityChange(quantity - 1)}
+            className="cursor-pointer text-3xl"
+          >
+            -
+          </button>
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            min="1"
+            value={quantity}
+            onChange={(e) => handleQuantityChange(Number(e.target.value))}
+            className="border p-0 w-10 text-center appearance-none"
+          />
+          <button
+            type="button"
+            onClick={() => handleQuantityChange(quantity + 1)}
+            className="cursor-pointer text-3xl"
+          >
+            +
+          </button>
+        </div>
+
+        <AddToCartButton
+          disabled={!selectedVariant || !selectedVariant.availableForSale}
+          onClick={() => {
+            window.location.href = window.location.href + '#cart-aside';
+          }}
+          lines={
+            selectedVariant
+              ? [
+                  {
+                    merchandiseId: selectedVariant.id,
+                    quantity: 1,
+                  },
+                ]
+              : []
+          }
+        >
+          {selectedVariant?.availableForSale ? 'Añadir a la cesta' : 'Agotado'}
+        </AddToCartButton>
+      </div>
     </div>
   );
 }
 
 function ProductOptions({option}: {option: VariantOption}) {
   return (
-    <div className="product-options" key={option.name}>
+    <div className="product-options font-bold" key={option.name}>
       <h5>{option.name}</h5>
-      <div className="product-options-grid">
+      <div className="product-options uppercase flex flex-wrap">
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
             <Link
-              className="product-options-item"
+              className={`product-options-item 
+              ${
+                isActive
+                  ? 'border-b-2 border-black'
+                  : 'border-b-2 border-transparent'
+              } 
+              ${isAvailable ? '' : 'line-through opacity-80'}`}
               key={option.name + value}
               prefetch="intent"
               preventScrollReset
               replace
               to={to}
-              style={{
-                border: isActive ? '1px solid black' : '1px solid transparent',
-                opacity: isAvailable ? 1 : 0.3,
-              }}
             >
               {value}
             </Link>
           );
         })}
       </div>
-      <br />
     </div>
   );
 }
@@ -301,6 +351,7 @@ function AddToCartButton({
             value={JSON.stringify(analytics)}
           />
           <button
+            className="bg-gradient-to-t border-black from-[#D6A585] uppercase cursor-pointer border-2 font-bold rounded-full shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center px-1"
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}

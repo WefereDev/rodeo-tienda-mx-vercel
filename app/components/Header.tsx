@@ -1,6 +1,7 @@
 import {Await, NavLink, useMatches} from '@remix-run/react';
 import {Suspense} from 'react';
 import type {LayoutProps} from './Layout';
+import {RodeoLogo, IconCarrito} from './Icons';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
@@ -9,12 +10,15 @@ type Viewport = 'desktop' | 'mobile';
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="header">
+    <header className="h-20 flex items-center justify-between px-4 bg-white border-b-2 border-black">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+        {/* <strong>{shop.name}</strong> */}
+        <RodeoLogo className="size-14 fill-[#564844]" />
       </NavLink>
-      <HeaderMenu menu={menu} viewport="desktop" />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      <div className="flex items-end justify-end gap-4 h-20 font-black text-3xl">
+        <HeaderMenu menu={menu} viewport="desktop" />
+        <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      </div>
     </header>
   );
 }
@@ -39,7 +43,7 @@ export function HeaderMenu({
 
   return (
     <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
+      {/* {viewport === 'mobile' && (
         <NavLink
           end
           onClick={closeAside}
@@ -49,7 +53,7 @@ export function HeaderMenu({
         >
           Home
         </NavLink>
-      )}
+      )} */}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 
@@ -61,7 +65,11 @@ export function HeaderMenu({
             : item.url;
         return (
           <NavLink
-            className="header-menu-item"
+            className={`flex items-center gap-3 rounded-t-lg h-14 px-4 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+              item.title === 'Nosotros'
+                ? ' bg-gradient-to-b from-[#D6A585]'
+                : ''
+            }`}
             end
             key={item.id}
             onClick={closeAside}
@@ -84,10 +92,10 @@ function HeaderCtas({
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+      {/* <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
         {isLoggedIn ? 'Account' : 'Sign in'}
       </NavLink>
-      <SearchToggle />
+      <SearchToggle /> */}
       <CartToggle cart={cart} />
     </nav>
   );
@@ -96,7 +104,7 @@ function HeaderCtas({
 function HeaderMenuMobileToggle() {
   return (
     <a className="header-menu-mobile-toggle" href="#mobile-menu-aside">
-      <h3>☰</h3>
+      <h3>Menu</h3>
     </a>
   );
 }
@@ -106,7 +114,14 @@ function SearchToggle() {
 }
 
 function CartBadge({count}: {count: number}) {
-  return <a href="#cart-aside">Cart {count}</a>;
+  return (
+    <a
+      href="#cart-aside"
+      className="flex items-center gap-3 rounded-t-lg h-14 px-4 bg-gradient-to-b border-black from-[#9da3ff] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] border-2"
+    >
+      <span hidden>Cart</span> <IconCarrito className="size-9" /> {count}
+    </a>
+  );
 }
 
 function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {

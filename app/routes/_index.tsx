@@ -1,12 +1,8 @@
 import type {V2_MetaFunction} from '@shopify/remix-oxygen';
-import {defer, type LoaderArgs} from '@shopify/remix-oxygen';
-import {Await, useLoaderData, Link} from '@remix-run/react';
-import {Suspense} from 'react';
+import {type LoaderArgs} from '@shopify/remix-oxygen';
+import {useLoaderData, Link} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
-import type {
-  FeaturedCollectionFragment,
-  RecommendedProductsQuery,
-} from 'storefrontapi.generated';
+import {ProductForm} from './products.$handle';
 
 export const meta: V2_MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -14,132 +10,148 @@ export const meta: V2_MetaFunction = () => {
 
 export async function loader({context}: LoaderArgs) {
   const {storefront} = context;
-  const {collections} = await storefront.query(FEATURED_COLLECTION_QUERY);
-  const featuredCollection = collections.nodes[0];
-  const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
+  const {collection} = await storefront.query(COLLECTION_QUERY, {
+    variables: {handle: 'rodeo'},
+  });
 
-  return defer({featuredCollection, recommendedProducts});
+  if (!collection) {
+    throw new Response(null, {status: 404});
+  }
+
+  return {
+    collection,
+  };
 }
 
 export default function Homepage() {
-  const data = useLoaderData<typeof loader>();
+  const {collection} = useLoaderData<typeof loader>();
   return (
     <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
+      <img
+        className="fixed top-0 left-0 w-full h-full object-cover -z-50 pointer-events-none"
+        src={collection.image.url}
+      />
+      <ProductsCollection products={collection.products.nodes} />
     </div>
   );
 }
 
-function FeaturedCollection({
-  collection,
-}: {
-  collection: FeaturedCollectionFragment;
-}) {
-  const image = collection.image;
+function ProductsCollection({products}) {
   return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image data={image} sizes="100vw" />
-        </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
-  );
-}
-
-function RecommendedProducts({
-  products,
-}: {
-  products: Promise<RecommendedProductsQuery>;
-}) {
-  return (
-    <div className="recommended-products">
-      <h2>Recommended Products</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={products}>
-          {({products}) => (
-            <div className="recommended-products-grid">
-              {products.nodes.map((product) => (
-                <Link
-                  key={product.id}
-                  className="recommended-product"
-                  to={`/products/${product.handle}`}
-                >
-                  <Image
-                    data={product.images.nodes[0]}
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 20vw, 50vw"
-                  />
-                  <h4>{product.title}</h4>
-                  <small>
-                    <Money data={product.priceRange.minVariantPrice} />
-                  </small>
-                </Link>
-              ))}
+    <div className="products-collection max-w-[980px] mx-auto grid lg:grid-cols-2 gap-6 py-8 px-4">
+      {products.map((product) => (
+        <div className="flex flex-col items-center justify-center gap-3">
+          <h2 className="bg-gradient-to-t border-black  from-[#D6A585] bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-xl text-center font-black uppercase border-2 rounded-lg flex items-center justify-center w-fit px-4 min-h-10">
+            {product.title}
+          </h2>
+          <div key={product.id} className="border-2 bg-white">
+            <Link key={product.id} to={`/products/${product.handle}`}>
+              <Image data={product.featuredImage} />
+            </Link>
+            <div className="flex flex-col gap-3 p-6">
+              <Money data={product.priceRange.minVariantPrice} />
+              <ProductForm
+                product={product}
+                selectedVariant={product?.variants.nodes[0]}
+                variants={product?.variants || []}
+              />
             </div>
-          )}
-        </Await>
-      </Suspense>
-      <br />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
 
-const FEATURED_COLLECTION_QUERY = `#graphql
-  fragment FeaturedCollection on Collection {
+const PRODUCT_VARIANT_FRAGMENT = `#graphql
+  fragment ProductVariantIn on ProductVariant {
+    availableForSale
+    quantityAvailable
+    compareAtPrice {
+      amount
+      currencyCode
+    }
     id
-    title
     image {
+      __typename
       id
       url
       altText
       width
       height
     }
-    handle
-  }
-  query FeaturedCollection($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...FeaturedCollection
-      }
+    price {
+      amount
+      currencyCode
+    }
+    product {
+      title
+      handle
+    }
+    selectedOptions {
+      name
+      value
+    }
+    sku
+    title
+    unitPrice {
+      amount
+      currencyCode
     }
   }
 ` as const;
 
-const RECOMMENDED_PRODUCTS_QUERY = `#graphql
-  fragment RecommendedProduct on Product {
+const PRODUCT_FRAGMENT = `#graphql
+  fragment ProductIn on Product {
     id
     title
+    vendor
     handle
+    descriptionHtml
+    description
+    options {
+      name
+      values
+    }
+    featuredImage {
+      url
+      altText
+    }
     priceRange {
       minVariantPrice {
         amount
         currencyCode
       }
     }
-    images(first: 1) {
+    variants(first: 1) {
       nodes {
-        id
+        ...ProductVariantIn
+      }
+    }
+    seo {
+      description
+      title
+    }
+  }
+  ${PRODUCT_VARIANT_FRAGMENT}
+` as const;
+
+const COLLECTION_QUERY = `#graphql
+  query CollectionIn($handle: String!) {
+    collection(handle: $handle) {
+      id
+      title
+      handle
+      image {
         url
-        altText
-        width
-        height
+        id
+      }
+      products(first: 10) {
+        nodes {
+          ...ProductIn
+        }
       }
     }
   }
-  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...RecommendedProduct
-      }
-    }
-  }
+  ${PRODUCT_FRAGMENT}
 ` as const;

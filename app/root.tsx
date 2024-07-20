@@ -21,7 +21,6 @@ import tailwindCss from './styles/tailwind.css';
 export function links() {
   return [
     {rel: 'stylesheet', href: tailwindCss},
-    {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},
     {
       rel: 'preconnect',
@@ -61,7 +60,7 @@ export async function loader({context}: LoaderArgs) {
   const headerPromise = storefront.query(HEADER_QUERY, {
     cache: storefront.CacheLong(),
     variables: {
-      headerMenuHandle: 'main-menu', // Adjust to your header menu handle
+      headerMenuHandle: 'rodeo-menu', // Adjust to your header menu handle
     },
   });
 
