@@ -8,6 +8,12 @@
   --color-light: #fff;
 }
 
+@media (min-width: 1024px) {
+  :root {
+    --aside-width: 40dvw;
+  }
+}
+
 /* Chrome, Safari, Edge, Opera */
 input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
