@@ -19,7 +19,7 @@ export function CartMain({layout, cart}: CartMainProps) {
   const className = `cart-main ${withDiscount ? 'with-discount' : ''}`;
 
   return (
-    <div className={className}>
+    <div className={`${className} max-w-[300px] max-h-dvh`}>
       <CartEmpty hidden={linesCount} layout={layout} />
       <CartDetails cart={cart} layout={layout} />
     </div>
