@@ -285,7 +285,7 @@ export function ProductForm({
               ? [
                   {
                     merchandiseId: selectedVariant.id,
-                    quantity: 1,
+                    quantity: quantity,
                   },
                 ]
               : []

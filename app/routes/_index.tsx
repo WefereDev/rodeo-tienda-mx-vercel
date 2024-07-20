@@ -44,7 +44,7 @@ function ProductsCollection({products}) {
           <h2 className="bg-gradient-to-t border-black  from-[#D6A585] bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-xl text-center font-black uppercase border-2 rounded-lg flex items-center justify-center w-fit px-4 min-h-10">
             {product.title}
           </h2>
-          <div key={product.id} className="border-2 bg-white">
+          <div key={product.id} className="border-2 border-black bg-white">
             <Link key={product.id} to={`/products/${product.handle}`}>
               <Image data={product.featuredImage} />
             </Link>

@@ -18,12 +18,7 @@ export function Aside({
   id?: string;
 }) {
   return (
-    <div
-      aria-modal
-      className="overlay left-0 top-0 right-0 bottom-0 max-h-dvh"
-      id={id}
-      role="dialog"
-    >
+    <div aria-modal className="overlay" id={id} role="dialog">
       <button
         className="close-outside"
         onClick={() => {
@@ -31,7 +26,7 @@ export function Aside({
           window.location.hash = '';
         }}
       />
-      <aside className="max-md:max-w-[300px] max-h-dvh">
+      <aside>
         <header>
           <h3>{heading}</h3>
           <CloseAside />

@@ -13,7 +13,6 @@ import {
 import type {CustomerAccessToken} from '@shopify/hydrogen-react/storefront-api-types';
 import type {HydrogenSession} from '../server';
 import favicon from '../public/favicon.svg';
-import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import {Layout} from '~/components/Layout';
 import tailwindCss from './styles/tailwind.css';
