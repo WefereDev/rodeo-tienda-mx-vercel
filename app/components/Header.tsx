@@ -1,13 +1,24 @@
 import {Await, NavLink, useMatches} from '@remix-run/react';
 import {Suspense} from 'react';
 import type {LayoutProps} from './Layout';
+import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {RodeoLogo, IconCarrito} from './Icons';
 
-type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
+interface HeaderProps {
+  header: HeaderQuery;
+  cart: Promise<CartApiQueryFragment | null>;
+  isLoggedIn: Promise<boolean>;
+  publicStoreDomain: string;
+}
 
 type Viewport = 'desktop' | 'mobile';
 
-export function Header({header, isLoggedIn, cart}: HeaderProps) {
+export function Header({
+  header,
+  isLoggedIn,
+  cart,
+  publicStoreDomain,
+}: HeaderProps) {
   const {shop, menu} = header;
   return (
     <header className="h-20 flex items-center justify-between px-4 bg-white border-b-2 border-black">
@@ -16,7 +27,12 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
         <RodeoLogo className="size-14 fill-[#564844]" />
       </NavLink>
       <div className="flex items-end justify-end gap-4 h-20 font-black text-3xl">
-        <HeaderMenu menu={menu} viewport="desktop" />
+        <HeaderMenu
+          menu={menu}
+          viewport="desktop"
+          primaryDomainUrl={header.shop.primaryDomain.url}
+          publicStoreDomain={publicStoreDomain}
+        />
         <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
       </div>
     </header>
@@ -25,13 +41,16 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
 
 export function HeaderMenu({
   menu,
+  primaryDomainUrl,
   viewport,
+  publicStoreDomain,
 }: {
   menu: HeaderProps['header']['menu'];
+  primaryDomainUrl: HeaderProps['header']['shop']['primaryDomain']['url'];
   viewport: Viewport;
+  publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
   const [root] = useMatches();
-  const publicStoreDomain = root?.data?.publicStoreDomain;
   const className = `header-menu-${viewport}`;
 
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
