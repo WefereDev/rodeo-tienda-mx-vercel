@@ -351,7 +351,7 @@ function AddToCartButton({
             value={JSON.stringify(analytics)}
           />
           <button
-            className="bg-gradient-to-t border-black from-[#D6A585] uppercase cursor-pointer border-2 font-bold rounded-full shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center px-1"
+            className="bg-gradient-to-t border-black from-[#D6A585] hover:bg-yellow-300 uppercase cursor-pointer border-2 font-bold rounded-full shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center px-1"
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
