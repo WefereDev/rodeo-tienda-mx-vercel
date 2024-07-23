@@ -27,10 +27,11 @@ export async function loader({context}: LoaderArgs) {
 export default function Homepage() {
   const {collection} = useLoaderData<typeof loader>();
   return (
-    <div className="home pt-[80dvh]">
-      <div
-        className={`bg-[url('${collection.image.url}')] bg-top bg-cover w-dvw h-dvh fixed top-0 left-0`}
-      ></div>
+    <div className="home">
+      <img
+        className="fixed top-0 left-0 w-full h-full object-cover object-left-top -z-50 pointer-events-none"
+        src={collection.image.url}
+      />
       <Countdown />
       <ProductsCollection products={collection.products.nodes} />
     </div>
