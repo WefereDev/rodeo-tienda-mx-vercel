@@ -29,7 +29,7 @@ export default function Homepage() {
   return (
     <div className="home">
       <img
-        className="fixed top-0 left-0 w-full h-full object-cover object-left-top -z-50 pointer-events-none"
+        className="fixed top-0 left-0 w-dvw h-dvh object-cover object-top -z-50 pointer-events-none"
         src={collection.image.url}
       />
       <Countdown />
