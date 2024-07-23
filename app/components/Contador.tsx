@@ -31,24 +31,24 @@ const Countdown = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center text-center font-black w-dvw h-[80dvh]">
+    <div className="flex flex-col items-center justify-center text-center font-black w-dvw h-[80dvh] text-white">
       <h2 className="text-2xl mb-4">Lanzamiento el 6 de agosto</h2>
       <div className="flex justify-center space-x-4">
         <div className="text-center">
           <span className="block text-4xl ">{timeLeft.days}</span>
-          <span className="text-gray-600">Días</span>
+          <span className="text-gray-300">Días</span>
         </div>
         <div className="text-center">
           <span className="block text-4xl ">{timeLeft.hours}</span>
-          <span className="text-gray-600">Horas</span>
+          <span className="text-gray-300">Horas</span>
         </div>
         <div className="text-center">
           <span className="block text-4xl ">{timeLeft.minutes}</span>
-          <span className="text-gray-600">Minutos</span>
+          <span className="text-gray-300">Minutos</span>
         </div>
         <div className="text-center">
           <span className="block text-4xl ">{timeLeft.seconds}</span>
-          <span className="text-gray-600">Segundos</span>
+          <span className="text-gray-300">Segundos</span>
         </div>
       </div>
     </div>
