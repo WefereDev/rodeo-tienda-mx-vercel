@@ -31,7 +31,7 @@ const Countdown = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center text-center font-black w-dvw h-[80dvw]">
+    <div className="flex flex-col items-center justify-center text-center font-black w-dvw h-[80dvh]">
       <h2 className="text-2xl mb-4">Lanzamiento el 6 de agosto</h2>
       <div className="flex justify-center space-x-4">
         <div className="text-center">
