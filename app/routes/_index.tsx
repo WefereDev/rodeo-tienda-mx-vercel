@@ -6,7 +6,7 @@ import {ProductForm} from './products.$handle';
 import Countdown from '~/components/Contador';
 
 export const meta: V2_MetaFunction = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [{title: 'Rodeo'}];
 };
 
 export async function loader({context}: LoaderArgs) {
