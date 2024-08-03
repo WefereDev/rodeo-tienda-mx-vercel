@@ -7,7 +7,7 @@ import {RodeoLogo, IconCarrito} from './Icons';
 interface HeaderProps {
   header: HeaderQuery;
   cart: Promise<CartApiQueryFragment | null>;
-  isLoggedIn: Promise<boolean>;
+  isLoggedIn?: Promise<boolean>;
   publicStoreDomain: string;
 }
 

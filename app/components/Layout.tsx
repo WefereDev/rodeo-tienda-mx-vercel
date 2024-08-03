@@ -20,6 +20,7 @@ export type LayoutProps = {
   footer: Promise<FooterQuery>;
   header: HeaderQuery;
   isLoggedIn: boolean;
+  publicStoreDomain: string;
 };
 
 export function Layout({
@@ -28,13 +29,21 @@ export function Layout({
   footer,
   header,
   isLoggedIn,
+  publicStoreDomain,
 }: LayoutProps) {
   return (
     <>
       <CartAside cart={cart} />
       <SearchAside />
-      <MobileMenuAside menu={header.menu} />
-      <Header header={header} cart={cart} isLoggedIn={isLoggedIn} />
+      <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
+      {header && (
+        <Header
+          header={header}
+          cart={cart}
+          isLoggedIn={isLoggedIn}
+          publicStoreDomain={publicStoreDomain}
+        />
+      )}
       <main>{children}</main>
       {/* <Suspense>
         <Await resolve={footer}>
@@ -86,10 +95,24 @@ function SearchAside() {
   );
 }
 
-function MobileMenuAside({menu}: {menu: HeaderQuery['menu']}) {
+function MobileMenuAside({
+  header,
+  publicStoreDomain,
+}: {
+  header: LayoutProps['header'];
+  publicStoreDomain: LayoutProps['publicStoreDomain'];
+}) {
   return (
-    <Aside id="mobile-menu-aside" heading="MENU">
-      <HeaderMenu menu={menu} viewport="mobile" />
-    </Aside>
+    header.menu &&
+    header.shop.primaryDomain?.url && (
+      <Aside id="mobile-menu-aside" heading="MENU">
+        <HeaderMenu
+          menu={header.menu}
+          viewport="mobile"
+          primaryDomainUrl={header.shop.primaryDomain.url}
+          publicStoreDomain={publicStoreDomain}
+        />
+      </Aside>
+    )
   );
 }
