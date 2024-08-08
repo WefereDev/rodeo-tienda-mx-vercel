@@ -1,14 +1,26 @@
 import React, {useState, useEffect, useRef} from 'react';
 
 const Countdown = () => {
-  const initialTime = {
-    days: 0,
-    hours: 10,
-    minutes: 4,
-    seconds: 35,
+  const calculateInitialTime = () => {
+    const targetDate = new Date('2024-08-09T17:00:00'); // 9 de agosto a las 5 p.m.
+    const now = new Date();
+
+    const totalSeconds = Math.floor((targetDate - now) / 1000);
+
+    const days = Math.floor(totalSeconds / (24 * 60 * 60));
+    const hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
+    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+    const seconds = totalSeconds % 60;
+
+    return {
+      days,
+      hours,
+      minutes,
+      seconds,
+    };
   };
 
-  const [timeLeft, setTimeLeft] = useState(initialTime);
+  const [timeLeft, setTimeLeft] = useState(calculateInitialTime());
   const isPaused = useRef(false);
 
   const calculateTimeLeft = () => {
@@ -51,11 +63,6 @@ const Countdown = () => {
       return () => clearInterval(timer);
     }
   }, [timeLeft]);
-  const pauseCountdown = () => {
-    isPaused.current = true;
-  };
-
-  pauseCountdown();
 
   return (
     <div className="flex flex-col items-center justify-center text-center font-black w-dvw h-[80dvh] text-white px-6">
