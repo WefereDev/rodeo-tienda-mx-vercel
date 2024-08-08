@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 
 const Countdown = () => {
   const calculateInitialTime = () => {
-    const targetDate = new Date('2024-08-09T17:00:00'); // 9 de agosto a las 5 p.m.
+    const targetDate = new Date('2024-08-09T15:00:00'); // 9 de agosto a las 3 p.m.
     const now = new Date();
 
     const totalSeconds = Math.floor((targetDate - now) / 1000);
