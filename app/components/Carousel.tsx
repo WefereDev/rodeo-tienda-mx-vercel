@@ -143,9 +143,8 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
         }}
       >
         <svg
-          width="100%"
-          height="100%"
-          className="size-8"
+          width="3rem"
+          height="3rem"
           viewBox="0 0 2560 2560"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
@@ -163,9 +162,8 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
         }}
       >
         <svg
-          width="100%"
-          height="100%"
-          className="size-8"
+          width="3rem"
+          height="3rem"
           viewBox="0 0 2560 2560"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
