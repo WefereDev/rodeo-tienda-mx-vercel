@@ -5,3 +5,7 @@
 .page-img img:first-child {
   @apply fixed top-0 left-0 w-full h-full object-cover object-top -z-50 pointer-events-none;
 }
+
+.page-img {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
