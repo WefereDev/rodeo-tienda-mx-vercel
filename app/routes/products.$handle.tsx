@@ -115,6 +115,18 @@ export default function Product() {
       <div className="grid grid-cols-1 lg:grid-cols-3 bg-white border-2 border-black my-8 max-w-[1024px] mx-4 lg:mx-auto">
         <div className="col-span-2">
           <ProductImage image={selectedVariant?.image} />
+          <script src="app/components/Carousel.js" />
+          <sz-carousel controls>
+            {product.images.nodes.map((image) => (
+              <Image
+                alt={image.altText || 'Product Image'}
+                aspectRatio="1/1"
+                data={image}
+                key={image.id}
+                sizes="(min-width: 45em) 50vw, 100vw"
+              />
+            ))}
+          </sz-carousel>
         </div>
         <ProductMain
           selectedVariant={selectedVariant}
@@ -410,6 +422,14 @@ const PRODUCT_FRAGMENT = `#graphql
     handle
     descriptionHtml
     description
+    images(first:20) {
+        nodes {
+          url
+          altText
+          id
+          src
+        }
+    }
     options {
       name
       values
@@ -426,7 +446,7 @@ const PRODUCT_FRAGMENT = `#graphql
       description
       title
     }
-  }
+  } 
   ${PRODUCT_VARIANT_FRAGMENT}
 ` as const;
 
