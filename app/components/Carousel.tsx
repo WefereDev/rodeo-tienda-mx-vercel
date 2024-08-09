@@ -142,7 +142,19 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
           cursor: 'pointer',
         }}
       >
-        Prev
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 2560 2560"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xml:space="preserve"
+          xmlns:serif="http://www.serif.com/"
+          style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+        >
+          <path d="M40.538,1280l2478.92,-1239.46l-0,2478.92l-2478.92,-1239.46Z" />
+        </svg>
       </button>
       <button
         onClick={onNext}
@@ -153,7 +165,19 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
           cursor: 'pointer',
         }}
       >
-        Next
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 2560 2560"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xml:space="preserve"
+          xmlns:serif="http://www.serif.com/"
+          style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+        >
+          <path d="M2519.46,1280l-2478.92,1239.46l0,-2478.92l2478.92,1239.46Z" />
+        </svg>
       </button>
     </>
   );
