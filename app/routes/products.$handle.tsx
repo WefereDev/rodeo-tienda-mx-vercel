@@ -122,7 +122,6 @@ export default function Product() {
               <CarouselItem>
                 <Image
                   alt={image.altText || 'Product Image'}
-                  aspectRatio="1/1"
                   className="object-contain"
                   data={image}
                   key={image.id}
