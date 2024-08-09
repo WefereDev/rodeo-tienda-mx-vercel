@@ -32,7 +32,7 @@ export default function Homepage() {
         className="fixed top-0 left-0 w-full h-full object-cover object-top -z-50 pointer-events-none"
         src={collection.image.url}
       />
-      <Countdown />
+      <div className="min-h-[80dvw]"></div>
       <ProductsCollection products={collection.products.nodes} />
     </div>
   );
