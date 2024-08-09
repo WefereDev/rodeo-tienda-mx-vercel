@@ -10,6 +10,8 @@ import type {
 } from 'storefrontapi.generated';
 import {useState} from 'react';
 
+import {Carousel, CarouselItem, CarouselControls} from '~/components/Carousel';
+
 import {
   Image,
   Money,
@@ -114,19 +116,20 @@ export default function Product() {
       />
       <div className="grid grid-cols-1 lg:grid-cols-3 bg-white border-2 border-black my-8 max-w-[1024px] mx-4 lg:mx-auto">
         <div className="col-span-2">
-          <ProductImage image={selectedVariant?.image} />
-          <script src="app/components/Carousel.js" />
-          <sz-carousel controls>
+          {/* <ProductImage image={selectedVariant?.image} /> */}
+          <Carousel controls>
             {product.images.nodes.map((image) => (
-              <Image
-                alt={image.altText || 'Product Image'}
-                aspectRatio="1/1"
-                data={image}
-                key={image.id}
-                sizes="(min-width: 45em) 50vw, 100vw"
-              />
+              <CarouselItem>
+                <Image
+                  alt={image.altText || 'Product Image'}
+                  aspectRatio="1/1"
+                  data={image}
+                  key={image.id}
+                  sizes="(min-width: 45em) 50vw, 100vw"
+                />
+              </CarouselItem>
             ))}
-          </sz-carousel>
+          </Carousel>
         </div>
         <ProductMain
           selectedVariant={selectedVariant}
