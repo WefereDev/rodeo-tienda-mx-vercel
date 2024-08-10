@@ -121,7 +121,7 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
   if (!checkoutUrl) return null;
 
   return (
-    <div>
+    <div className="bg-gradient-to-t border-black from-[#D6A585] bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-xl text-center font-black uppercase border-2 rounded-lg flex items-center justify-center w-full px-4 min-h-12">
       <a href={checkoutUrl} target="_self">
         <p>Terminar compra</p>
       </a>
@@ -145,7 +145,7 @@ export function CartSummary({
   return (
     <div aria-labelledby="cart-summary" className={className}>
       <h4>Total</h4>
-      <dl className="cart-subtotal">
+      <dl className="cart-subtotal flex gap-3">
         <dt>Subtotal</dt>
         <dd>
           {cost?.subtotalAmount?.amount ? (
