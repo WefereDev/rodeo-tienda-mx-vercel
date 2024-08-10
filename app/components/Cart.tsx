@@ -140,7 +140,9 @@ export function CartSummary({
   layout: CartMainProps['layout'];
 }) {
   const className =
-    layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
+    layout === 'page'
+      ? 'cart-summary-page'
+      : 'cart-summary-aside flex flex-col gap-3 text-xl';
 
   return (
     <div aria-labelledby="cart-summary" className={className}>
