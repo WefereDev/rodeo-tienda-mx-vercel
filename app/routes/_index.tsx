@@ -42,9 +42,7 @@ function ProductsCollection({products}) {
   return (
     <div className="products-collection max-w-[980px] mx-auto grid lg:grid-cols-2 gap-6 py-8 px-4">
       {products.map((product) => {
-        // Selecciona la primera variante disponible del producto
-        const selectedVariant = product.variants.nodes[0];
-
+        const firstVariant = product.variants.nodes[0];
         return (
           <div
             key={product.id}
@@ -54,14 +52,14 @@ function ProductsCollection({products}) {
               {product.title}
             </h2>
             <div className="border-2 border-black bg-white">
-              <Link key={product.id} to={`/products/${product.handle}`}>
+              <Link to={`/products/${product.handle}`}>
                 <Image data={product.featuredImage} />
               </Link>
               <div className="flex flex-col gap-3 p-6">
                 <Money data={product.priceRange.minVariantPrice} />
                 <ProductForm
                   product={product}
-                  selectedVariant={selectedVariant}
+                  selectedVariant={product.selectedVariant || firstVariant}
                   variants={product.variants.nodes}
                 />
               </div>
@@ -134,10 +132,13 @@ const PRODUCT_FRAGMENT = `#graphql
       }
     }
     variants(first: 1) {
-      nodes {
-        ...ProductVariantIn
-      }
+    nodes {
+      ...ProductVariantIn
     }
+  }
+  selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {
+    ...ProductVariantIn
+  }
     seo {
       description
       title
