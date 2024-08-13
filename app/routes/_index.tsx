@@ -48,6 +48,14 @@ function ProductsCollection({products}) {
             key={product.id}
             className="flex flex-col items-center justify-center gap-3"
           >
+            <style>
+              {`
+                .product-options-item:nth-of-type(1) {
+                  background-color: black;
+                  color: white;
+                }
+              `}
+            </style>
             <h2 className="bg-gradient-to-t border-black from-[#D6A585] bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-xl text-center font-black uppercase border-2 rounded-lg flex items-center justify-center w-fit px-4 min-h-10">
               {product.title}
             </h2>
@@ -59,7 +67,7 @@ function ProductsCollection({products}) {
                 <Money data={product.priceRange.minVariantPrice} />
                 <ProductForm
                   product={product}
-                  selectedVariant={product.options[0] || firstVariant}
+                  selectedVariant={firstVariant}
                   variants={product.variants.nodes}
                 />
               </div>
