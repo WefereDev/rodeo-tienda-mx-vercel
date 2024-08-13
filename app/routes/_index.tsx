@@ -54,7 +54,7 @@ function ProductsCollection({products}) {
               <Money data={product.priceRange.minVariantPrice} />
               <ProductForm
                 product={product}
-                selectedVariant={product?.variants.nodes[0]}
+                selectedVariant={product}
                 variants={product?.variants || []}
               />
             </div>

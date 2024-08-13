@@ -146,7 +146,7 @@ export function CartSummary({
 
   return (
     <div aria-labelledby="cart-summary" className={className}>
-      <h4>Total</h4>
+      {/* <h4>Total</h4> */}
       <dl className="cart-subtotal flex gap-3">
         <dt>Subtotal</dt>
         <dd>

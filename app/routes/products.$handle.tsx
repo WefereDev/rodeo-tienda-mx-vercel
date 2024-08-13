@@ -322,11 +322,7 @@ function ProductOptions({option}: {option: VariantOption}) {
           return (
             <Link
               className={`product-options-item 
-              ${
-                isActive
-                  ? 'border-b-2 border-black'
-                  : 'border-b-2 border-transparent'
-              } 
+              ${isActive ? 'bg-black text-white rounded-full' : ''} 
               ${isAvailable ? '' : 'line-through opacity-80'}`}
               key={option.name + value}
               prefetch="intent"
