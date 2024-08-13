@@ -41,6 +41,11 @@ export default function Homepage() {
 function ProductsCollection({products}) {
   return (
     <div className="products-collection max-w-[980px] mx-auto grid lg:grid-cols-2 gap-6 py-8 px-4">
+      <style>
+        .product-options-item:first-of-type {
+          @apply bg-black text-white rounded-full;
+        }
+      </style>
       {products.map((product) => (
         <div className="flex flex-col items-center justify-center gap-3">
           <h2 className="bg-gradient-to-t border-black  from-[#D6A585] bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-xl text-center font-black uppercase border-2 rounded-lg flex items-center justify-center w-fit px-4 min-h-10">
