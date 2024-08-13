@@ -136,9 +136,6 @@ const PRODUCT_FRAGMENT = `#graphql
         ...ProductVariantIn
       }
     }
-    selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {
-      ...ProductVariantIn
-    }
     seo {
       description
       title
