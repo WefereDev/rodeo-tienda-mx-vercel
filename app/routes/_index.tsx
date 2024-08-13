@@ -56,7 +56,7 @@ function ProductsCollection({products}) {
                 product={product}
                 selectedVariant={product}
                 variants={product?.variants || []}
-                classPP="bg-black text-white rounded-full"
+                classPP="first-of-type:bg-black first-of-type:text-white"
               />
             </div>
           </div>

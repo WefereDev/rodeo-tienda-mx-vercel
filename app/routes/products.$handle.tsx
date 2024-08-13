@@ -328,10 +328,12 @@ function ProductOptions(
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
             <Link
-              className={`product-options-item 
-              ${isActive ? 'bg-black text-white rounded-full' : ''} 
-              ${isAvailable ? '' : 'line-through opacity-80'} ${
-                classPP ? classPP : ''
+              className={`product-options-item rounded-full ${
+                isActive ? 'bg-black text-white' : ''
+              } ${isAvailable ? '' : 'line-through opacity-80'} ${
+                typeof classPP === 'object'
+                  ? JSON.stringify(classPP)
+                  : classPP || ''
               }`}
               key={option.name + value}
               prefetch="intent"
