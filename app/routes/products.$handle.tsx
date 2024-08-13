@@ -239,10 +239,12 @@ export function ProductForm({
   product,
   selectedVariant,
   variants,
+  classPP,
 }: {
   product: ProductFragment;
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
+  classPP?: string;
 }) {
   const [quantity, setQuantity] = useState(1);
 
@@ -260,7 +262,9 @@ export function ProductForm({
         options={product.options}
         variants={variants}
       >
-        {({option}) => <ProductOptions key={option.name} option={option} />}
+        {({option}) => (
+          <ProductOptions classPP={classPP} key={option.name} option={option} />
+        )}
       </VariantSelector>
 
       <div className="flex gap-3">
@@ -313,7 +317,10 @@ export function ProductForm({
   );
 }
 
-function ProductOptions({option}: {option: VariantOption}) {
+function ProductOptions(
+  {option}: {option: VariantOption},
+  classPP: {classPP?: string},
+) {
   return (
     <div className="product-options font-bold" key={option.name}>
       <h5>{option.name}</h5>
@@ -323,7 +330,9 @@ function ProductOptions({option}: {option: VariantOption}) {
             <Link
               className={`product-options-item 
               ${isActive ? 'bg-black text-white rounded-full' : ''} 
-              ${isAvailable ? '' : 'line-through opacity-80'}`}
+              ${isAvailable ? '' : 'line-through opacity-80'} ${
+                classPP ? classPP : ''
+              }`}
               key={option.name + value}
               prefetch="intent"
               preventScrollReset
