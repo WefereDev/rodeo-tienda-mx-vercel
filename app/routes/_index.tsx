@@ -132,13 +132,13 @@ const PRODUCT_FRAGMENT = `#graphql
       }
     }
     variants(first: 1) {
-    nodes {
+      nodes {
+        ...ProductVariantIn
+      }
+    }
+    selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {
       ...ProductVariantIn
     }
-  }
-  selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {
-    ...ProductVariantIn
-  }
     seo {
       description
       title
