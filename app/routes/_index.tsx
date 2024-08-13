@@ -41,27 +41,34 @@ export default function Homepage() {
 function ProductsCollection({products}) {
   return (
     <div className="products-collection max-w-[980px] mx-auto grid lg:grid-cols-2 gap-6 py-8 px-4">
-      {products.map((product) => (
-        <div className="flex flex-col items-center justify-center gap-3">
-          <h2 className="bg-gradient-to-t border-black  from-[#D6A585] bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-xl text-center font-black uppercase border-2 rounded-lg flex items-center justify-center w-fit px-4 min-h-10">
-            {product.title}
-          </h2>
-          <div key={product.id} className="border-2 border-black bg-white">
-            <Link key={product.id} to={`/products/${product.handle}`}>
-              <Image data={product.featuredImage} />
-            </Link>
-            <div className="flex flex-col gap-3 p-6">
-              <Money data={product.priceRange.minVariantPrice} />
-              <ProductForm
-                product={product}
-                selectedVariant={product}
-                variants={product?.variants || []}
-                classPP="first-of-type:bg-black first-of-type:text-white"
-              />
+      {products.map((product) => {
+        // Selecciona la primera variante disponible del producto
+        const selectedVariant = product.variants.nodes[0];
+
+        return (
+          <div
+            key={product.id}
+            className="flex flex-col items-center justify-center gap-3"
+          >
+            <h2 className="bg-gradient-to-t border-black from-[#D6A585] bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-xl text-center font-black uppercase border-2 rounded-lg flex items-center justify-center w-fit px-4 min-h-10">
+              {product.title}
+            </h2>
+            <div className="border-2 border-black bg-white">
+              <Link key={product.id} to={`/products/${product.handle}`}>
+                <Image data={product.featuredImage} />
+              </Link>
+              <div className="flex flex-col gap-3 p-6">
+                <Money data={product.priceRange.minVariantPrice} />
+                <ProductForm
+                  product={product}
+                  selectedVariant={selectedVariant}
+                  variants={product.variants.nodes}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
